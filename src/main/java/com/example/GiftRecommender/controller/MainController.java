@@ -16,12 +16,9 @@ import java.util.List;
 public class MainController {
 
     @Autowired
-    Constants constants;
-
-    @Autowired
     GeminiService geminiService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = {"http://localhost:4200", "https://gift-recommender-front-cua3.vercel.app"})
     @PostMapping("/request")
     private List<Gift> giftRequest(@Valid @RequestBody GeminiRequest request) {
         return geminiService.giftRequest(request);
