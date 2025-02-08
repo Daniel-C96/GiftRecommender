@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Constants {
 
-    @Value("${API_TOKEN}")
+    @Value("${API_TOKEN:default}")
     private String apiToken;
     private final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=";
 
@@ -14,10 +14,10 @@ public class Constants {
         return API_URL + apiToken;
     }
 
-    @Value("${CUSTOM_SEARCH_API}")
+    @Value("${CUSTOM_SEARCH_API:default}")
     private String customSearchKey;
 
-    @Value("${CUSTOM_SEARCH_CX}")
+    @Value("${CUSTOM_SEARCH_CX:default}")
     private String customSearchCx;
 
     public String getCUSTOM_SEARCH_URL() {
