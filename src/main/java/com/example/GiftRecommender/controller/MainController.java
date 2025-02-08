@@ -1,5 +1,6 @@
 package com.example.GiftRecommender.controller;
 
+import com.example.GiftRecommender.config.Constants;
 import com.example.GiftRecommender.model.Gift;
 import com.example.GiftRecommender.service.GeminiService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,6 +16,9 @@ import java.util.List;
 public class MainController {
 
     @Autowired
+    Constants constants;
+
+    @Autowired
     GeminiService geminiService;
 
     @CrossOrigin(origins = "http://localhost:4200")
@@ -25,6 +29,8 @@ public class MainController {
 
     @GetMapping("/test")
     private String test() {
+        System.out.println(constants.getAPI_URL());
+
         return "Test endpoint for bucket4j";
     }
 }
