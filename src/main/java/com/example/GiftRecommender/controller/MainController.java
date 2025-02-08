@@ -29,7 +29,6 @@ public class MainController {
 
     @GetMapping("/test")
     private String test() {
-        System.out.println(constants.getAPI_URL());
-        return "Test endpoint for bucket4j";
+        return "Test endpoint";
     }
 }
