@@ -62,6 +62,7 @@ public class GeminiService {
         try {
             String jsonText = sendRequest(requestBody);
             List<Gift> gifts = parseGiftResponse(jsonText, geminiRequest);
+            System.out.println(geminiRequest);
             return gifts;
         } catch (Exception e) {
             e.printStackTrace();
