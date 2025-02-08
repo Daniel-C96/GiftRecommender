@@ -17,40 +17,50 @@ import java.nio.charset.StandardCharsets;
 public class ImageSearchService {
 
     @Autowired
-    Constants constants;
+    private Constants constants;
 
     public String retrieveImageUrl(String item) {
-
+        // Build the API URL by encoding the item name
         String apiUrl = constants.getCUSTOM_SEARCH_URL() + URLEncoder.encode(item, StandardCharsets.UTF_8);
 
         try {
-            // Create HTTP client
-            HttpClient client = HttpClient.newHttpClient();
+            HttpResponse<String> response = sendHttpRequest(apiUrl);
 
-            // Create the HTTP request
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
-                    .header("Content-Type", "application/json")
-                    .GET()
-                    .build();
-
-            // Send the request and receive the response
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            // Parse the JSON response
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(response.body());
-
-            // Extract the URL of the image from the first element in "items"
-            JsonNode firstItem = rootNode.path("items").get(0);
-            if (firstItem != null) {
-                return firstItem.path("link").asText();
+            // Check if the response status is "Too Many Requests"
+            if (response.statusCode() == 429) {
+                return "no-more-requests.png";
             }
+
+            return extractImageUrlFromResponse(response.body());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null; // Return null in case of an error
+    }
 
-        return null; // Return null in case of error
+    private HttpResponse<String> sendHttpRequest(String apiUrl) throws Exception {
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    private String extractImageUrlFromResponse(String responseBody) throws Exception {
+        // Parse the JSON response and extract the image link
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(responseBody);
+
+        JsonNode firstItem = rootNode.path("items").get(0);
+        if (firstItem != null) {
+            return firstItem.path("link").asText(); // Extract the image URL
+        }
+
+        return null;
     }
 }

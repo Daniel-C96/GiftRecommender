@@ -22,4 +22,9 @@ public class MainController {
     private List<Gift> giftRequest(@Valid @RequestBody GeminiRequest request) {
         return geminiService.giftRequest(request);
     }
+
+    @GetMapping("/test")
+    private String test() {
+        return "Test endpoint for bucket4j";
+    }
 }
