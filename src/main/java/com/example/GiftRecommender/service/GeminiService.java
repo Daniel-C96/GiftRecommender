@@ -4,7 +4,7 @@ import com.example.GiftRecommender.config.Constants;
 import com.example.GiftRecommender.model.Gift;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dto.GeminiRequest;
+import com.example.GiftRecommender.dto.GeminiRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
